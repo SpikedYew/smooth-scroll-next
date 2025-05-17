@@ -7,11 +7,11 @@ import {
   useMotionTemplate,
   //   useMotionValueEvent,
 } from "framer-motion";
-import { FiMapPin } from "react-icons/fi";
+// import { FiMapPin } from "react-icons/fi";
 
 import { useRef } from "react";
-
-import { useDragControls } from "framer-motion";
+import { FaArrowAltCircleDown } from "react-icons/fa";
+// import { useDragControls } from "framer-motion";
 
 //https://images.unsplash.com/photo-1742314591445-bfacc47276e3?q=80&w=3437&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
 
@@ -26,25 +26,31 @@ export default function ParallaxScrollMine() {
     offset: [`start end`, `end end`],
   });
 
-  const y = useTransform(scrollYProgress, [0, 0.7], [-400, 200]);
-  const x = useTransform(scrollYProgress, [0.8, 1], [-200, 200]);
+  const maskSizeX = useTransform(scrollYProgress, [0.3, 1], [0, 220]);
+  const maskSize = useMotionTemplate`${maskSizeX}% ${maskSizeX}%`;
+  // const size = useTransform(scrollYProgress, [0, 1], [0, 700]);
+  // const x = useTransform(scrollYProgress, [0.8, 1], [0, 700]);
 
-  const opacity = useTransform(scrollYProgress, [0.65, 1], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0.75, 1], [1, 0.85]);
+  const isOpacity = useTransform(scrollYProgress, [0, 0.7], [-1, 1]);
+  const opacity = useMotionTemplate`${isOpacity}`;
 
-  const transform = useMotionTemplate`translateY(${y}px) scale(${scale}) translateX(${x}px)`;
+  // const scale = useTransform(scrollYProgress, [0.75, 1], [1, 0.85]);
+
+  // const transform = useMotionTemplate`translateY(${y}px) scale(${scale}) translateX(${x}px)`;
+  // const height = useMotionTemplate`${x}px`;
+  // const width = useMotionTemplate`${y}px`;
 
   // controls.start(event, { snapToCursor: true });
   return (
     <>
-      <ReactLenis root>
+      <ReactLenis root options={{ lerp: 0.1 }}>
         {/* <motion.div
           drag
           dragListener={true}
           dragControls={controls}
           className=" top-0 w-20 h-20 bg-amber-50 absolute z-100"
         ></motion.div> */}
-        <div
+        {/* <div
           ref={ref}
           className="h-[2000px] flex items-center justify-center overflow-hidden"
         >
@@ -56,7 +62,78 @@ export default function ParallaxScrollMine() {
               transform,
             }}
           />
+        </div> */}
+        <div className="h-screen w-screen flex items-center justify-center flex-col bg-black">
+          <motion.h1
+            className="text-4xl font-semibold mb-2"
+            initial={{ opacity: 0, y: 40, scale: 1 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1.6 }}
+            transition={{
+              y: { delay: 0.2, duration: 0.7 },
+              opacity: { delay: 0.2, duration: 0.7 },
+              scale: { delay: 0.7, duration: 0.6, ease: "easeInOut" },
+            }}
+          >
+            Scroll
+          </motion.h1>
+          <motion.h2
+            className="text-2xl"
+            initial={{ opacity: 0, y: -40, scale: 1 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1.6 }}
+            transition={{
+              y: { delay: 0.7, duration: 0.7 },
+              opacity: { delay: 0.7, duration: 0.7 },
+              scale: { delay: 1.2, duration: 0.6, ease: "easeInOut" },
+            }}
+          >
+            Down
+          </motion.h2>
+          <motion.div
+            className="absolute mx-auto bottom-20"
+            initial={{ opacity: 0, y: -40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{
+              y: { delay: 0.7, duration: 0.7 },
+              opacity: { delay: 0.7, duration: 0.7 },
+              scale: {
+                delay: 1.2,
+                duration: 1,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "loop",
+              },
+            }}
+          >
+            <FaArrowAltCircleDown size={50} />
+          </motion.div>
         </div>
+        <div ref={ref} className="h-[2500px]">
+          <div className="h-screen w-screen sticky top-0 flex items-center justify-center bg-black">
+            <motion.div
+              style={{
+                WebkitMaskImage: 'url("/camera.svg")',
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskSize: maskSize || "0% 0%",
+                WebkitMaskPosition: "center",
+                maskImage: 'url("/camera.svg")',
+                maskRepeat: "no-repeat",
+                maskSize: maskSize || "0% 0%",
+                maskPosition: "center",
+                opacity,
+              }}
+              className="relative w-screen h-screen"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1742314591445-bfacc47276e3?q=80&w=3437&auto=format&fit=crop&ixlib=rb-4.1.0"
+                alt=""
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+          </div>
+        </div>
+
+        <div className="h-screen w-screen bg-black"></div>
       </ReactLenis>
     </>
   );

@@ -4,6 +4,7 @@ import { useScroll, useTransform, motion } from "framer-motion";
 import { useRef } from "react";
 import { useState, useEffect } from "react";
 import Lenis from "lenis";
+import { MotionValue } from "framer-motion";
 
 import Image from "next/image";
 import styles from "../page.module.css";
@@ -39,7 +40,7 @@ export default function Parallax() {
   useEffect(() => {
     const lenis = new Lenis();
 
-    const raf = (time) => {
+    const raf = (time: number) => {
       lenis.raf(time);
       requestAnimationFrame(raf);
     };
@@ -76,7 +77,13 @@ export default function Parallax() {
   );
 }
 
-const Column = ({ images, y = 0 }: { images: string[]; y: any }) => {
+const Column = ({
+  images,
+  y = 0,
+}: {
+  images: string[];
+  y: MotionValue<number> | number;
+}) => {
   return (
     <motion.div style={{ y }} className={styles.column}>
       {" "}

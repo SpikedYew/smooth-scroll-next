@@ -23,6 +23,22 @@ export default function Nav() {
         GALLERY <TfiGallery />
       </Link>
       <Link
+        href="/test"
+        //Smooth scroll in Buttons
+
+        className="flex items-center gap-1 text-xs text-zinc-400"
+      >
+        TEST <TfiGallery />
+      </Link>
+      <Link
+        href="/parallax-scroll"
+        //Smooth scroll in Buttons
+
+        className="flex items-center gap-1 text-xs text-zinc-400"
+      >
+        P-Scroll <TfiGallery />
+      </Link>
+      <Link
         href="/scroll-trigger"
         //Smooth scroll in Buttons
 
